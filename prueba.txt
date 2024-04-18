@@ -1,0 +1,2 @@
+Este es un txt de prueba para
+verificar la conexión de Git.
