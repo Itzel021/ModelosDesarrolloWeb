@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <servlet>
+        <servlet-name>MateriasServlet</servlet-name>
+        <servlet-class>MateriasServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfesoresServlet</servlet-name>
+        <servlet-class>ProfesoresServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DetallesServlet</servlet-name>
+        <servlet-class>DetallesServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>InsertarSolicitud</servlet-name>
+        <servlet-class>InsertarSolicitud</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MateriasServlet</servlet-name>
+        <url-pattern>/MateriasServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfesoresServlet</servlet-name>
+        <url-pattern>/ProfesoresServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetallesServlet</servlet-name>
+        <url-pattern>/DetallesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertarSolicitud</servlet-name>
+        <url-pattern>/InsertarSolicitud</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+</web-app>
