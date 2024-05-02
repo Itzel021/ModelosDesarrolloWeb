@@ -19,8 +19,12 @@ public class DetallesServlet extends HttpServlet {
             String nombrePrograma = request.getParameter("nombrePrograma");
             String idMateria = request.getParameter("id_materia");
             String materia = request.getParameter("materia");
-            String idProfesor = request.getParameter("id_profesor");
+            
             String profesor = request.getParameter("profesor");
+            String[] parts = profesor.split("_");
+            int idProfesor = Integer.parseInt(parts[0]);
+            String nombreProfesor = parts[1];
+            
             String fecha = request.getParameter("fecha");
             String hora = request.getParameter("hora");
             String asunto = request.getParameter("asunto");
@@ -33,8 +37,8 @@ public class DetallesServlet extends HttpServlet {
             request.setAttribute("nombrePrograma", nombrePrograma);
             request.setAttribute("idMateria", idMateria);
             request.setAttribute("materia", materia);
-            request.setAttribute("idProfesor", idProfesor);
-            request.setAttribute("profesor", profesor);
+             request.setAttribute("idProfesor", idProfesor);
+            request.setAttribute("nombreProfesor", nombreProfesor);
             request.setAttribute("fecha", fecha);
             request.setAttribute("hora", hora);
             request.setAttribute("asunto", asunto);

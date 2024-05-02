@@ -25,7 +25,7 @@
                 <p><strong>Matrícula:</strong> <%= request.getAttribute("matricula")%></p>
                 <p><strong>Programa Educativo:</strong> <%= request.getAttribute("nombrePrograma")%></p>
                 <p><strong>Materia:</strong> <%= request.getAttribute("materia")%></p>
-                <p><strong>Profesor:</strong> <%= request.getAttribute("profesor")%></p>
+                <p><strong>Profesor:</strong> <%= request.getAttribute("nombreProfesor")%></p>
                 <p><strong>Eres alumno:</strong> <%= request.getAttribute("eresAlumno")%></p>
                 <p><strong>Fecha:</strong> <%= request.getAttribute("fecha")%></p>
                 <p><strong>Hora:</strong> <%= request.getAttribute("hora")%></p>
@@ -33,7 +33,8 @@
 
                 
                 <input type="hidden" name="matricula" value="<%= request.getAttribute("matricula")%>">
-                <input type="hidden" name="profesor" value="<%= request.getAttribute("profesor")%>">
+                <input type="hidden" name="idProfesor" value="<%= request.getAttribute("idProfesor")%>">
+                <input type="hidden" name="profesor" value="<%= request.getAttribute("nombreProfesor")%>">
                 <input type="hidden" name="fecha" value="<%= request.getAttribute("fecha")%>">
                 <input type="hidden" name="hora" value="<%= request.getAttribute("hora")%>">
                 <input type="hidden" name="asunto" value="<%= request.getAttribute("asunto")%>">

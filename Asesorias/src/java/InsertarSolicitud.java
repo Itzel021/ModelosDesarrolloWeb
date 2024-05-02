@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ClasesJava.*;
+import javax.servlet.RequestDispatcher;
 
 public class InsertarSolicitud extends HttpServlet {
 
@@ -16,30 +17,28 @@ public class InsertarSolicitud extends HttpServlet {
         String fecha = request.getParameter("fecha");
 
         String asunto = request.getParameter("asunto");
-        String profesor = request.getParameter("profesor");
-        String[] parts = profesor.split("_");
-        int idProfesor = Integer.parseInt(parts[0]);
-        String nombreProfesor = parts[1];
+        String profesor = request.getParameter("idProfesor");
+        int idProfesor = Integer.parseInt(profesor);
         String estado = "Pendiente";
         // Obtener la cadena de hora del formulario
         String hora = request.getParameter("hora");
 
-        // Dividir la cadena de hora en horas y minutos
-        String[] partesHora = hora.split(":");
-        int horas = Integer.parseInt(partesHora[0]);
-        int minutos = Integer.parseInt(partesHora[1]);
-
-        // Crear un objeto Time con la hora y los minutos
-        java.sql.Time tiempo = new java.sql.Time(horas, minutos, 0);
+        if (hora.length() == 5) {
+            hora += ":00";
+        } else if (hora.length() == 4) {
+            hora += ":00:00";
+        }
+        java.sql.Time tiempo = java.sql.Time.valueOf(hora);
         // Insertar la solicitud en la base de datos
-        boolean exito = Consultas.insertarSolicitud(matricula, fecha, tiempo, asunto, idProfesor, estado);
-        int idSolicitud = Consultas.obtenerIdSolicitudRecienCreada();
+        int id_solicitud = Consultas.insertarSolicitud(matricula, fecha, tiempo, asunto, idProfesor, estado);
         // Enviar una respuesta al cliente
-        if (exito) {
+        if (id_solicitud != -1) {
             // Agregar el ID de la solicitud como un atributo de la solicitud
-            request.setAttribute("idSolicitud", idSolicitud);
+            request.setAttribute("id_solicitud", id_solicitud);
             // Redirigir a una página JSP en caso de éxito
-            response.sendRedirect("exito.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("exito.jsp");
+            dispatcher.forward(request, response);
+
         } else {
             response.getWriter().println("Error al insertar la solicitud");
         }

@@ -22,11 +22,11 @@
         <h1></h1>
         <div class="container">  
                     <div>
-                        <img src="enviado.png" alt="Estudiante" class="logo" style="width: 100px; height: auto;">
+                        <img src="enviado.png" alt="solicitudEnviada"  style="width: 100px; height: auto;">
                     </div>
                 <strong>Solicitud de asesoria enviada correctamente!</strong>
                 <p>Puedes consultar el estado de tu solicitud en el inicio.</p>
-                <p>El ID de la solicitud es: <%= request.getAttribute("idSolicitud") %></p>
+                <p>El ID de la solicitud es: <%= request.getAttribute("id_solicitud") %></p>
                 <a href="index.jsp">Regresar al Inicio</a>
         </div>
     </body>

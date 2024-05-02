@@ -8,7 +8,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.sql.Statement;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import  java.sql.Time;
 /**
  *
  * @author itzee
@@ -164,23 +167,31 @@ public class Consultas {
         return profesores;
     }
 
-    public static boolean insertarSolicitud(int matricula, String fecha, java.sql.Time hora, String asunto, int idProfesor, String estado) {
+    public static Time formatTime(java.sql.Time hora) {
+        LocalTime localTime = hora.toLocalTime();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = localTime.format(formatter);
+        return Time.valueOf(formattedTime);
+    }
+
+    public static int insertarSolicitud(int matricula, String fecha, java.sql.Time hora, String asunto, int idProfesor, String estado) {
         Connection conn = null;
         PreparedStatement stmt = null;
-        boolean exito = false;
+        ResultSet rs = null;
+        int idSolicitud = -1; // Inicializar con un valor inválido
 
         try {
             // Establecer conexión con la base de datos
-            conn = ConectaDB.obtenConexion(); // Suponiendo que tienes una clase de conexión llamada ConectaDB
+            conn = ConectaDB.obtenConexion();
 
             // Consulta SQL para insertar la solicitud
             String query = "INSERT INTO solicitudes (fecha_asesoria, hora_asesoria, asunto, estado, id_profesor, matricula) VALUES (?, ?, ?, ?, ?, ?)";
 
             // Preparar la declaración SQL
-            stmt = conn.prepareStatement(query);
+            stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             stmt.setDate(1, java.sql.Date.valueOf(fecha));
-            stmt.setTime(2, hora);
+            stmt.setTime(2, formatTime(hora));
             stmt.setString(3, asunto);
             stmt.setString(4, estado);
             stmt.setInt(5, idProfesor);
@@ -189,55 +200,12 @@ public class Consultas {
             // Ejecutar la consulta
             int filasInsertadas = stmt.executeUpdate();
 
-            // Verificar si la inserción fue exitosa
-            if (filasInsertadas > 0) {
-                exito = true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Cerrar recursos
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+            // Obtener las claves generadas por la base de datos
+            rs = stmt.getGeneratedKeys();
 
-        return exito;
-    }
-
-    public static int obtenerIdSolicitudRecienCreada() {
-        Connection conn = null;
-        PreparedStatement stmt = null;
-        ResultSet rs = null;
-        int idSolicitud = -1; // Valor predeterminado en caso de que no se pueda obtener el ID
-
-        try {
-            // Establecer conexión con la base de datos
-            conn = ConectaDB.obtenConexion(); // Suponiendo que tienes una clase de conexión llamada ConectaDB
-
-            // Consulta SQL para obtener el ID de la solicitud más reciente insertada
-            String query = "SELECT LAST_INSERT_ID() AS id_solicitud";
-
-            // Preparar la declaración SQL
-            stmt = conn.prepareStatement(query);
-
-            // Ejecutar la consulta
-            rs = stmt.executeQuery();
-
-            // Verificar si se encontró el ID de la solicitud recién creada
-            if (rs.next()) {
-                idSolicitud = rs.getInt("id_solicitud");
+            // Si se insertó un registro, obtener el id_asesoria
+            if (filasInsertadas > 0 && rs.next()) {
+                idSolicitud = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -268,5 +236,4 @@ public class Consultas {
 
         return idSolicitud;
     }
-
 }
