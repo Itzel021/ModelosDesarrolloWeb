@@ -13,6 +13,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.sql.Time;
 import java.sql.ResultSetMetaData;
+
 /**
  *
  * @author itzee
@@ -299,5 +300,123 @@ public class Consultas {
         return detallesSolicitud;
     }
 
-    
+    // Método para obtener el nombre del profesor por su ID
+    public static String obtenerNombreProfesor(int idProfesor) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String nombreProfesor = null;
+
+        try {
+            conn = ConectaDB.obtenConexion(); // Obtener la conexión a la base de datos
+            String sql = "SELECT nombre, apellido_paterno, apellido_materno FROM profesores WHERE id_profesor = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, idProfesor);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String paterno = rs.getString("apellido_paterno");
+                String materno = rs.getString("apellido_materno");
+                nombreProfesor = nombre + " " + paterno + " " + materno;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Manejar la excepción adecuadamente
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Manejar la excepción adecuadamente
+            }
+        }
+
+        return nombreProfesor;
+    }
+
+    // Método para obtener el nombre del alumno por su matrícula
+    public static String obtenerNombreAlumno(int matricula) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String nombreAlumno = null;
+
+        try {
+            conn = ConectaDB.obtenConexion(); // Obtener la conexión a la base de datos
+            String sql = "SELECT nombre, apellido_paterno, apellido_materno FROM alumnos WHERE matricula = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, matricula);
+            rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String nombre = rs.getString("nombre");
+                String paterno = rs.getString("apellido_paterno");
+                String materno = rs.getString("apellido_materno");
+                nombreAlumno = nombre + " " + paterno + " " + materno;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Manejar la excepción adecuadamente
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Manejar la excepción adecuadamente
+            }
+        }
+
+        return nombreAlumno;
+    }
+
+    // Método para obtener el programa educativo por matrícula
+    public static String obtenerProgramaEducativo(int matricula) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        String programaEducativo = null;
+        
+        try {
+            conn = ConectaDB.obtenConexion(); // Obtener la conexión a la base de datos
+            String sql = "SELECT pe.nombre FROM alumnos a JOIN programa_educativo pe ON a.id_programaedu = pe.id_programaedu WHERE a.matricula = ?";
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, matricula);
+            rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                programaEducativo = rs.getString("nombre");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Manejar la excepción adecuadamente
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Manejar la excepción adecuadamente
+            }
+        }
+        
+        return programaEducativo;
+    }
 }

@@ -26,11 +26,11 @@
             if (detallesSolicitud != null && !detallesSolicitud.isEmpty()) {
         %>
         <div class="mensaje">
-            <p><strong>Nombre:</strong></p>
+            <p><strong>Nombre: </strong><%=  request.getAttribute("nombreAlumno")%></p>
             <p><strong>Matricula: </strong><%= detallesSolicitud.get("matricula")%></p>
-            <p><strong>Programa Educativo: </strong></p>
+            <p><strong>Programa Educativo: </strong><%=  request.getAttribute("programaEducativo")%></p>
             <p><strong>Materia: </strong></p>
-            <p><strong>Profesor: </strong></p>
+            <p><strong>Profesor: </strong><%=  request.getAttribute("nombreProfesor")%></p>
         </div>
         <div class="consulta">
 
