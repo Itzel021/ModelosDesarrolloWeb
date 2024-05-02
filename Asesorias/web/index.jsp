@@ -29,10 +29,10 @@
                         <p>Ingresa tu número de solicitud para consultar su estado.</p>
                     </div>
                     <form class="input-group" action="ConsultarAsesoria" method="post">
-                        <input type="text" class="input" placeholder="Número de solicitud">
+                        <input type="text" name="idSolicitud" class="input" placeholder="Número de solicitud">
                         <input class="button-student" type="submit" value="Consultar">
                     </form>
-                    <a class="button-student" href="FormAsesoria.jsp">Solicitar Asesoria</a>
+                    <div class="button-student"><a  href="FormAsesoria.jsp">Solicitar Asesoria</a></div>
                 </div>
             </div>
 

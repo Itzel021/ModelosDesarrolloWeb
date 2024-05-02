@@ -11,7 +11,8 @@ import java.util.Map;
 import java.sql.Statement;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import  java.sql.Time;
+import java.sql.Time;
+import java.sql.ResultSetMetaData;
 /**
  *
  * @author itzee
@@ -236,4 +237,67 @@ public class Consultas {
 
         return idSolicitud;
     }
+
+    public static Map<String, Object> obtenerDetallesSolicitud(int idSolicitud) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Object> detallesSolicitud = new HashMap<>();
+
+        try {
+            // Establecer conexión con la base de datos
+            conn = ConectaDB.obtenConexion();
+
+            // Consulta SQL para obtener los detalles de la solicitud
+            String query = "SELECT * FROM solicitudes WHERE id_solicitud = ?";
+
+            // Preparar la declaración SQL
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, idSolicitud);
+
+            // Ejecutar la consulta
+            rs = stmt.executeQuery();
+
+            // Verificar si se encontró la solicitud con el idSolicitud especificado
+            if (rs.next()) {
+                detallesSolicitud.put("idSolicitud", rs.getInt("id_solicitud"));
+                detallesSolicitud.put("fechaAsesoria", rs.getDate("fecha_asesoria"));
+                detallesSolicitud.put("horaAsesoria", rs.getTime("hora_asesoria"));
+                detallesSolicitud.put("asunto", rs.getString("asunto"));
+                detallesSolicitud.put("idProfesor", rs.getInt("id_profesor"));
+                detallesSolicitud.put("matricula", rs.getInt("matricula"));
+                detallesSolicitud.put("estado", rs.getString("estado"));
+                // Agrega otros campos según tu esquema de base de datos
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Cerrar recursos
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return detallesSolicitud;
+    }
+
+    
 }

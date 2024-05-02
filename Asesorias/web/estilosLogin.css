@@ -129,3 +129,8 @@ label {
 #welcome-teacher{
     text-align: center;
 }
+.button-student a {
+    display: inline-block;
+    text-decoration: none;
+    border-radius: 5px;
+}

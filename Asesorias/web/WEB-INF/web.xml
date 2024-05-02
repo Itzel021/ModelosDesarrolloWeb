@@ -16,6 +16,10 @@
         <servlet-name>InsertarSolicitud</servlet-name>
         <servlet-class>InsertarSolicitud</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ConsultarAsesoria</servlet-name>
+        <servlet-class>ConsultarAsesoria</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MateriasServlet</servlet-name>
         <url-pattern>/MateriasServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>InsertarSolicitud</servlet-name>
         <url-pattern>/InsertarSolicitud</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ConsultarAsesoria</servlet-name>
+        <url-pattern>/ConsultarAsesoria</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
