@@ -2,7 +2,6 @@
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,14 +17,16 @@ public class MateriasServlet extends HttpServlet {
         // Recuperar los datos del formulario
         String nombre = request.getParameter("nombre");
         String matricula = request.getParameter("matricula");
-        String idPrograma = request.getParameter("programa");
-        String nombrePrograma = Consultas.obtenerNombrePrograma(idPrograma); 
-        List<String> materias = Consultas.obtenerNombresMateriasPorPrograma(idPrograma);
+        String nombrePrograma = request.getParameter("nombrePrograma");
+        
+        int IDPrograma = Consultas.obtenerIDPrograma(nombrePrograma); 
+        // Convertir el ID del programa educativo a String
+        String IDProgramaStr = String.valueOf(IDPrograma);
+        List<String> materias = Consultas.obtenerNombresMateriasPorPrograma(IDProgramaStr);
 
         // Setear los datos en el request para pasarlos al JSP
         request.setAttribute("nombre", nombre);
         request.setAttribute("matricula", matricula);
-        request.setAttribute("idPrograma", idPrograma);
         request.setAttribute("nombrePrograma", nombrePrograma);
         request.setAttribute("materias", materias);
 

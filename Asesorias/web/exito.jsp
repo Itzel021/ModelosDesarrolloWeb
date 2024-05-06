@@ -27,7 +27,7 @@
                 <strong>Solicitud de asesoria enviada correctamente!</strong>
                 <p>Puedes consultar el estado de tu solicitud en el inicio.</p>
                 <p>El ID de la solicitud es: <%= request.getAttribute("id_solicitud") %></p>
-                <a href="index.jsp">Regresar al Inicio</a>
+                <div class="button"><a href="index.jsp">Regresar al inicio</a></div>
         </div>
     </body>
 </html>

@@ -17,19 +17,20 @@ public class ConsultarAsesoria extends HttpServlet {
 
         // Llamar al método para obtener los detalles de la solicitud
         Map<String, Object> detallesSolicitud = Consultas.obtenerDetallesSolicitud(idSolicitud);
+        
         // Obtener la matrícula del mapa detallesSolicitud
         Integer matricula = (Integer) detallesSolicitud.get("matricula");
         Integer idProfesor = (Integer) detallesSolicitud.get("idProfesor");
         
-        String nombreAlumno = Consultas.obtenerNombreAlumno(matricula.intValue());
+        Map<String, Object> detallesAlumno = Consultas.obtenerDetallesAlumno(matricula.intValue());
         String nombreProfesor = Consultas.obtenerNombreProfesor(idProfesor.intValue());
-        String programaEducativo = Consultas.obtenerProgramaEducativo(matricula.intValue());
+        //String programaEducativo = Consultas.obtenerProgramaEducativo(matricula.intValue());
         
         // Añadir los detalles de la solicitud al objeto request
         request.setAttribute("detallesSolicitud", detallesSolicitud);
-        request.setAttribute("nombreAlumno", nombreAlumno);
+        request.setAttribute("detallesAlumno", detallesAlumno);
         request.setAttribute("nombreProfesor", nombreProfesor);
-        request.setAttribute("programaEducativo", programaEducativo);
+        //request.setAttribute("programaEducativo", programaEducativo);
         // Enviar la solicitud al JSP para que se muestren los detalles
         request.getRequestDispatcher("ConsultarEstado.jsp").forward(request, response);
 

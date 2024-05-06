@@ -20,6 +20,14 @@
         <servlet-name>ConsultarAsesoria</servlet-name>
         <servlet-class>ConsultarAsesoria</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>MatriculasServlet</servlet-name>
+        <servlet-class>MatriculasServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>BuscarMateriasServlet</servlet-name>
+        <servlet-class>BuscarMateriasServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MateriasServlet</servlet-name>
         <url-pattern>/MateriasServlet</url-pattern>
@@ -39,6 +47,14 @@
     <servlet-mapping>
         <servlet-name>ConsultarAsesoria</servlet-name>
         <url-pattern>/ConsultarAsesoria</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>MatriculasServlet</servlet-name>
+        <url-pattern>/MatriculasServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BuscarMateriasServlet</servlet-name>
+        <url-pattern>/BuscarMateriasServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

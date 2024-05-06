@@ -23,10 +23,9 @@
         <div class="container">
             <form action="ProfesoresServlet" method="post">
 
-                <p><strong>Nombre:</strong> <%= request.getAttribute("nombre")%></p>
-                <p><strong>Matrícula:</strong> <%= request.getAttribute("matricula")%></p>
-                <p><strong>Programa Educativo:</strong> <%= request.getAttribute("nombrePrograma")%></p>
-
+                <p><strong>Nombre: </strong><%= request.getAttribute("nombre")%></p>
+                <p><strong>Matrícula: </strong><%= request.getAttribute("matricula")%> </p>
+                <p><strong>Programa Educativo: </strong><%= request.getAttribute("nombrePrograma")%></p>
                 <label for="materia">Materia:</label><br>
                 <select id="materia" name="materia" required>
                     <option value="">Selecciona una materia</option>

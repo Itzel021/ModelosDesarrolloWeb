@@ -60,30 +60,30 @@ public class Consultas {
         return nombresMaterias;
     }
 
-// Método para obtener el nombre del programa educativo dado su ID
-    public static String obtenerNombrePrograma(String idPrograma) {
+// Método para obtener el ID del programa educativo 
+    public static int obtenerIDPrograma(String nombrePrograma) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        String nombrePrograma = null;
+        int IDPrograma = 0;
 
         try {
             // Establecer conexión con la base de datos
             conn = ConectaDB.obtenConexion(); // Suponiendo que tienes una clase de conexión llamada ConexionDB
 
             // Consulta SQL para obtener el nombre del programa educativo
-            String query = "SELECT nombre FROM programa_educativo WHERE id_programaedu = ?";
+            String query = "SELECT id_programaedu FROM programa_educativo WHERE nombre = ?";
 
             // Preparar la declaración SQL
             stmt = conn.prepareStatement(query);
-            stmt.setString(1, idPrograma);
+            stmt.setInt(1, IDPrograma);
 
             // Ejecutar la consulta
             rs = stmt.executeQuery();
 
             // Verificar si se encontró el programa y obtener su nombre
             if (rs.next()) {
-                nombrePrograma = rs.getString("nombre");
+                IDPrograma = rs.getInt("id_programaedu");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class Consultas {
             }
         }
 
-        return nombrePrograma;
+        return IDPrograma;
     }
 
     public static Map<String, Integer> obtenerProfesoresPorMateria(String nombreMateria) {
@@ -392,14 +392,14 @@ public class Consultas {
         PreparedStatement stmt = null;
         ResultSet rs = null;
         String programaEducativo = null;
-        
+
         try {
             conn = ConectaDB.obtenConexion(); // Obtener la conexión a la base de datos
             String sql = "SELECT pe.nombre FROM alumnos a JOIN programa_educativo pe ON a.id_programaedu = pe.id_programaedu WHERE a.matricula = ?";
             stmt = conn.prepareStatement(sql);
             stmt.setInt(1, matricula);
             rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 programaEducativo = rs.getString("nombre");
             }
@@ -408,15 +408,75 @@ public class Consultas {
             // Manejar la excepción adecuadamente
         } finally {
             try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Manejar la excepción adecuadamente
             }
         }
-        
+
         return programaEducativo;
     }
+
+    public static Map<String, Object> obtenerDetallesAlumno(int matricula) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        Map<String, Object> detallesAlumno = new HashMap<>();
+
+        try {
+            // Establecer conexión con la base de datos
+            conn = ConectaDB.obtenConexion();
+
+            // Consulta SQL para obtener los detalles del alumno
+            String query = "SELECT a.nombre, a.apellido_paterno, a.apellido_materno, a.id_programaedu, p.nombre AS nombre_programa "
+                    + "FROM alumnos a "
+                    + "INNER JOIN programa_educativo p ON a.id_programaedu = p.id_programaedu "
+                    + "WHERE a.matricula = ?";
+
+            // Preparar la declaración SQL
+            stmt = conn.prepareStatement(query);
+            stmt.setInt(1, matricula);
+
+            // Ejecutar la consulta
+            rs = stmt.executeQuery();
+
+            // Verificar si se encontró el alumno con la matrícula especificada
+            if (rs.next()) {
+                detallesAlumno.put("matricula", matricula);
+                detallesAlumno.put("nombre", rs.getString("nombre"));
+                detallesAlumno.put("apellidoPaterno", rs.getString("apellido_paterno"));
+                detallesAlumno.put("apellidoMaterno", rs.getString("apellido_materno"));
+                detallesAlumno.put("programaEducativo", rs.getString("nombre_programa"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Cerrar recursos
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (stmt != null) {
+                    stmt.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return detallesAlumno;
+    }
+
 }

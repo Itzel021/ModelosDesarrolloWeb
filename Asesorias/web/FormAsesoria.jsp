@@ -20,26 +20,10 @@
     <body>
         <h1>Formulario de Asesoría</h1>
         <div class="container">
-            <form action="MateriasServlet" method="post">
-                <label for="nombre">Nombre:</label><br>
-                <input type="text" id="nombre" name="nombre" required><br>
-
-                <label for="matricula">Matrícula:</label><br>
+            <form action="MatriculasServlet" method="post">
+                <label for="matricula">Ingresa tu matrícula:</label><br>
                 <input type="text" id="matricula" name="matricula" required><br>
-
-                <label for="programa">Programa Educativo:</label><br>
-                <select id="programa" name="programa" required>
-                    <option value="">Selecciona un programa</option>
-                    <%
-                        List<String[]> programas = Consultas.obtenerProgramas();
-                        for (String[] programa : programas) {
-                    %>
-                    <option value="<%=programa[0]%>"><%=programa[1]%></option>
-                    <%
-                        }
-                    %>
-                </select><br>
-                <input type="submit" value="Siguiente">
+                <input type="submit" value="Buscar Matrícula">
             </form>
         </div>
     </body>

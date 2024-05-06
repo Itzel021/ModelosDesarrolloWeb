@@ -26,9 +26,9 @@
             if (detallesSolicitud != null && !detallesSolicitud.isEmpty()) {
         %>
         <div class="mensaje">
-            <p><strong>Nombre: </strong><%=  request.getAttribute("nombreAlumno")%></p>
-            <p><strong>Matricula: </strong><%= detallesSolicitud.get("matricula")%></p>
-            <p><strong>Programa Educativo: </strong><%=  request.getAttribute("programaEducativo")%></p>
+            <p><strong>Nombre: </strong>${detallesAlumno.nombre} ${detallesAlumno.apellidoPaterno} ${detallesAlumno.apellidoMaterno}</p>
+            <p><strong>Matrícula: </strong> ${detallesAlumno.matricula}</p>
+            <p><strong>Programa Educativo: </strong> ${detallesAlumno.programaEducativo}</p>
             <p><strong>Materia: </strong></p>
             <p><strong>Profesor: </strong><%=  request.getAttribute("nombreProfesor")%></p>
         </div>
