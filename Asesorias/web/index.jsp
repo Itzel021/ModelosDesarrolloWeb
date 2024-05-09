@@ -1,9 +1,3 @@
-<%-- 
-    Document   : index
-    Created on : 30 abr 2024, 15:53:13
-    Author     : itzee
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -46,7 +40,7 @@
                         <h3>Bienvenido</h3>
                         <p>Ingresa tu identificador de docente para consultar tus asesorias.</p>
                     </div>
-                    <form class="input-group" action="AccesoServlet" method="post">
+                    <form class="input-group" action="AccesoProfesorServlet" method="POST">
                         <input type="text" class="input" name="id_profesor" placeholder="ID de profesor">
                         <input class="button-teacher" type="submit" value="Acceder">
                     </form>
