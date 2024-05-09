@@ -65,7 +65,8 @@ td{
 
 .button {
     text-align: center;
-    margin-top: 20px;
+    padding-bottom: 40px;
+    padding-right: 500px;
 }
 
 .button a {
@@ -80,9 +81,4 @@ td{
 .button a:hover {
     background-color: #0056b3;
 }
-.mensaje {
-    text-align: justify;
-    padding: 20px;
-    margin-bottom: 30px; 
-    margin-left: 80px;
-}
+

@@ -37,7 +37,7 @@ public class DetallesServlet extends HttpServlet {
             request.setAttribute("nombrePrograma", nombrePrograma);
             request.setAttribute("idMateria", idMateria);
             request.setAttribute("materia", materia);
-             request.setAttribute("idProfesor", idProfesor);
+            request.setAttribute("idProfesor", idProfesor);
             request.setAttribute("nombreProfesor", nombreProfesor);
             request.setAttribute("fecha", fecha);
             request.setAttribute("hora", hora);

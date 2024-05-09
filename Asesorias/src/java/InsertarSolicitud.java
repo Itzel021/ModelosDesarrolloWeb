@@ -20,8 +20,10 @@ public class InsertarSolicitud extends HttpServlet {
         String profesor = request.getParameter("idProfesor");
         int idProfesor = Integer.parseInt(profesor);
         String estado = "Pendiente";
+        String comentario = " ";
         // Obtener la cadena de hora del formulario
         String hora = request.getParameter("hora");
+        String materia = request.getParameter("materia");
 
         if (hora.length() == 5) {
             hora += ":00";
@@ -30,7 +32,7 @@ public class InsertarSolicitud extends HttpServlet {
         }
         java.sql.Time tiempo = java.sql.Time.valueOf(hora);
         // Insertar la solicitud en la base de datos
-        int id_solicitud = Consultas.insertarSolicitud(matricula, fecha, tiempo, asunto, idProfesor, estado);
+        int id_solicitud = Consultas.insertarSolicitud(matricula, fecha, tiempo, asunto, idProfesor, estado, comentario, materia);
         // Enviar una respuesta al cliente
         if (id_solicitud != -1) {
             // Agregar el ID de la solicitud como un atributo de la solicitud

@@ -7,32 +7,41 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import ClasesJava.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/ConsultarAsesoria")
 public class ConsultarAsesoria extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Obtener el idSolicitud del formulario
-        int idSolicitud = Integer.parseInt(request.getParameter("idSolicitud"));
+        int matricula = Integer.parseInt(request.getParameter("matricula"));
 
-        // Llamar al método para obtener los detalles de la solicitud
-        Map<String, Object> detallesSolicitud = Consultas.obtenerDetallesSolicitud(idSolicitud);
-        
-        // Obtener la matrícula del mapa detallesSolicitud
-        Integer matricula = (Integer) detallesSolicitud.get("matricula");
-        Integer idProfesor = (Integer) detallesSolicitud.get("idProfesor");
-        
-        Map<String, Object> detallesAlumno = Consultas.obtenerDetallesAlumno(matricula.intValue());
-        String nombreProfesor = Consultas.obtenerNombreProfesor(idProfesor.intValue());
-        //String programaEducativo = Consultas.obtenerProgramaEducativo(matricula.intValue());
-        
-        // Añadir los detalles de la solicitud al objeto request
-        request.setAttribute("detallesSolicitud", detallesSolicitud);
+        // Obtener los detalles del alumno asociado a la matrícula
+        Map<String, Object> detallesAlumno = Consultas.obtenerDetallesAlumno(matricula);
+        // Obtener los detalles de todas las solicitudes de asesoría asociadas a la matrícula
+        List<Map<String, Object>> detallesSolicitudes = Consultas.obtenerDetallesAsesorias(matricula);
+
+        // Obtener los ID de profesor de cada solicitud de asesoría
+        List<Integer> idProfesores = new ArrayList<>();
+        for (Map<String, Object> solicitud : detallesSolicitudes) {
+            idProfesores.add((Integer) solicitud.get("idProfesor"));
+        }
+
+        // Obtener los nombres de los profesores correspondientes a los ID de profesor
+        List<String> nombresProfesores = new ArrayList<>();
+        for (int idProfesor : idProfesores) {
+            String nombreProfesor = Consultas.obtenerNombreProfesor(idProfesor); // Ajusta según tu implementación
+            nombresProfesores.add(nombreProfesor);
+        }
+
+        // Añadir los detalles del alumno al objeto request
         request.setAttribute("detallesAlumno", detallesAlumno);
-        request.setAttribute("nombreProfesor", nombreProfesor);
-        //request.setAttribute("programaEducativo", programaEducativo);
+        // Añadir los detalles de las solicitudes al objeto request
+        request.setAttribute("detallesSolicitudes", detallesSolicitudes);
+        // Añadir los nombres de los profesores al objeto request
+        request.setAttribute("nombresProfesores", nombresProfesores);
         // Enviar la solicitud al JSP para que se muestren los detalles
         request.getRequestDispatcher("ConsultarEstado.jsp").forward(request, response);
-
     }
 }

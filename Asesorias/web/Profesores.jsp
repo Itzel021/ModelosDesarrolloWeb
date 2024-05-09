@@ -41,10 +41,6 @@
                     <% }%>
                 </select><br>
 
-                <label for="eres_alumno">¿Eres alumno?</label><br>
-                <input type="radio" id="si" name="eres_alumno" value="si" required>Si
-                <input type="radio" id="no" name="eres_alumno" value="no">No
-
                 <label for="fecha">Fecha:</label><br>
                 <input type="date" id="fecha" name="fecha" required><br>
 

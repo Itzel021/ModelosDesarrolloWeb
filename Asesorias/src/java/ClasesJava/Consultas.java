@@ -176,7 +176,7 @@ public class Consultas {
         return Time.valueOf(formattedTime);
     }
 
-    public static int insertarSolicitud(int matricula, String fecha, java.sql.Time hora, String asunto, int idProfesor, String estado) {
+    public static int insertarSolicitud(int matricula, String fecha, java.sql.Time hora, String asunto, int idProfesor, String estado, String comentario,  String materia) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
@@ -187,7 +187,7 @@ public class Consultas {
             conn = ConectaDB.obtenConexion();
 
             // Consulta SQL para insertar la solicitud
-            String query = "INSERT INTO solicitudes (fecha_asesoria, hora_asesoria, asunto, estado, id_profesor, matricula) VALUES (?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO solicitudes (fecha_asesoria, hora_asesoria, asunto, estado, id_profesor, matricula, comentario_profesor, materia) VALUES (?, ?, ?, ?, ?, ?,?,?)";
 
             // Preparar la declaración SQL
             stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -198,6 +198,8 @@ public class Consultas {
             stmt.setString(4, estado);
             stmt.setInt(5, idProfesor);
             stmt.setInt(6, matricula);
+            stmt.setString(7, comentario);
+            stmt.setString(8, materia);
 
             // Ejecutar la consulta
             int filasInsertadas = stmt.executeUpdate();
@@ -239,28 +241,29 @@ public class Consultas {
         return idSolicitud;
     }
 
-    public static Map<String, Object> obtenerDetallesSolicitud(int idSolicitud) {
+    public static List<Map<String, Object>> obtenerDetallesAsesorias(int matricula) {
         Connection conn = null;
         PreparedStatement stmt = null;
         ResultSet rs = null;
-        Map<String, Object> detallesSolicitud = new HashMap<>();
+        List<Map<String, Object>> detallesAsesorias = new ArrayList<>();
 
         try {
             // Establecer conexión con la base de datos
             conn = ConectaDB.obtenConexion();
 
-            // Consulta SQL para obtener los detalles de la solicitud
-            String query = "SELECT * FROM solicitudes WHERE id_solicitud = ?";
+            // Consulta SQL para obtener los detalles de las solicitudes de asesoría
+            String query = "SELECT * FROM solicitudes WHERE matricula = ?";
 
             // Preparar la declaración SQL
             stmt = conn.prepareStatement(query);
-            stmt.setInt(1, idSolicitud);
+            stmt.setInt(1, matricula);
 
             // Ejecutar la consulta
             rs = stmt.executeQuery();
 
-            // Verificar si se encontró la solicitud con el idSolicitud especificado
-            if (rs.next()) {
+            // Iterar sobre los resultados y agregarlos a la lista de detalles de asesorías
+            while (rs.next()) {
+                Map<String, Object> detallesSolicitud = new HashMap<>();
                 detallesSolicitud.put("idSolicitud", rs.getInt("id_solicitud"));
                 detallesSolicitud.put("fechaAsesoria", rs.getDate("fecha_asesoria"));
                 detallesSolicitud.put("horaAsesoria", rs.getTime("hora_asesoria"));
@@ -268,7 +271,11 @@ public class Consultas {
                 detallesSolicitud.put("idProfesor", rs.getInt("id_profesor"));
                 detallesSolicitud.put("matricula", rs.getInt("matricula"));
                 detallesSolicitud.put("estado", rs.getString("estado"));
+                detallesSolicitud.put("comentarios", rs.getString("comentario_profesor"));
+                detallesSolicitud.put("materia", rs.getString("materia"));
                 // Agrega otros campos según tu esquema de base de datos
+
+                detallesAsesorias.add(detallesSolicitud);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -297,7 +304,7 @@ public class Consultas {
             }
         }
 
-        return detallesSolicitud;
+        return detallesAsesorias;
     }
 
     // Método para obtener el nombre del profesor por su ID

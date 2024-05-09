@@ -3,6 +3,7 @@
     Created on : 1 may 2024, 22:11:14
     Author     : itzee
 --%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.Map"%>
 <!DOCTYPE html>
@@ -17,41 +18,72 @@
     <body>
         <div class="encabezado">          
             <div class="encabezado-contenedor">               
-                <img src="estado.png" alt="estadoSolicitud" style="width: 100px; height: auto;">
-                <h1>Detalles de la Solicitud</h1>
+                <img src="estado.png" alt="estadoSolicitud" style="width: 80px; height: auto;">
+                <h1>Solicitudes</h1>
             </div>
         </div>
         <%
-            Map<String, Object> detallesSolicitud = (Map<String, Object>) request.getAttribute("detallesSolicitud");
-            if (detallesSolicitud != null && !detallesSolicitud.isEmpty()) {
+            Map<String, Object> detallesAlumno = (Map<String, Object>) request.getAttribute("detallesAlumno");
+            if (detallesAlumno != null && !detallesAlumno.isEmpty()) {
         %>
-        <div class="mensaje">
-            <p><strong>Nombre: </strong>${detallesAlumno.nombre} ${detallesAlumno.apellidoPaterno} ${detallesAlumno.apellidoMaterno}</p>
-            <p><strong>Matrícula: </strong> ${detallesAlumno.matricula}</p>
-            <p><strong>Programa Educativo: </strong> ${detallesAlumno.programaEducativo}</p>
-            <p><strong>Materia: </strong></p>
-            <p><strong>Profesor: </strong><%=  request.getAttribute("nombreProfesor")%></p>
+        <div  style="padding-left: 110px; padding-right: 130px; display: flex; flex-direction: row; justify-content: space-between; align-items: flex-start;">
+            <div>
+                <div class="button" style="padding-top: 60px; align-self: flex-start;"><a href="index.jsp">Regresar al inicio</a></div>
+            </div>
+            <div>
+                <p><strong>Matrícula:</strong> <%= detallesAlumno.get("matricula")%></p>
+                <p><strong>Nombre:</strong> <%= detallesAlumno.get("nombre")%> <%= detallesAlumno.get("apellidoPaterno")%> <%= detallesAlumno.get("apellidoMaterno")%></p>
+                <p><strong>Programa Educativo:</strong> <%= detallesAlumno.get("programaEducativo")%></p>
+            </div>
+  
         </div>
+        <%
+            List<Map<String, Object>> detallesSolicitudes = (List<Map<String, Object>>) request.getAttribute("detallesSolicitudes");
+            if (detallesSolicitudes != null && !detallesSolicitudes.isEmpty()) {
+        %>
         <div class="consulta">
-
             <table>
                 <tr>
                     <th>ID de Solicitud</th>
                     <th>Fecha de Asesoría</th>
                     <th>Hora de Asesoría</th>
+                    <th>Materia</th>
                     <th>Asunto</th>
                     <th>Estado</th>
+                    <th>Profesor</th>
+                    <th>Comentarios</th>
                 </tr>
+                <%
+                    List<String> nombresProfesores = (List<String>) request.getAttribute("nombresProfesores");
+                    if (detallesSolicitudes != null && !detallesSolicitudes.isEmpty() && nombresProfesores != null && !nombresProfesores.isEmpty()) {
+                        // Iterar sobre todas las solicitudes de asesoría
+                        for (int i = 0; i < detallesSolicitudes.size(); i++) {
+                            Map<String, Object> solicitud = detallesSolicitudes.get(i);
+                            String nombreProfesor = nombresProfesores.get(i); // Obtener el nombre del profesor correspondiente
+%>
                 <tr>
-                    <td><%= detallesSolicitud.get("idSolicitud")%></td>
-                    <td><%= detallesSolicitud.get("fechaAsesoria")%></td>
-                    <td><%= detallesSolicitud.get("horaAsesoria")%></td>
-                    <td><%= detallesSolicitud.get("asunto")%></td>
-                    <td><%= detallesSolicitud.get("estado")%></td>
+                    <td><%= solicitud.get("idSolicitud")%></td>
+                    <td><%= solicitud.get("fechaAsesoria")%></td>
+                    <td><%= solicitud.get("horaAsesoria")%></td>
+                    <td><%= solicitud.get("materia")%></td>
+                    <td><%= solicitud.get("asunto")%></td>
+                    <td><%= solicitud.get("estado")%></td>
+                    <td><%= nombreProfesor%></td> 
+                    <td><%= solicitud.get("comentarios")%></td>
                 </tr>
+                <%
+                        }
+                    }
+                %>
             </table>
         </div>
-        <div class="button"><a href="index.jsp">Regresar al inicio</a></div>
+        <%
+        } else {
+        %>
+        <p>No se encontraron detalles del alumno.</p>
+        <%
+            }
+        %>
         <%
         } else {
         %>
@@ -61,4 +93,3 @@
         %>
     </body>
 </html>
-

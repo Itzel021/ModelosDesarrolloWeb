@@ -24,7 +24,7 @@
                 <p><strong>Nombre:</strong> <%= request.getAttribute("nombre")%></p>
                 <p><strong>Matrícula:</strong> <%= request.getAttribute("matricula")%></p>
                 <p><strong>Programa Educativo:</strong> <%= request.getAttribute("nombrePrograma")%></p>
-                <p><strong>Materia:</strong> <%= request.getAttribute("materia")%></p>
+                <p><strong>Materia:</strong><%= request.getAttribute("materia")%></p>
                 <p><strong>Profesor:</strong> <%= request.getAttribute("nombreProfesor")%></p>
                 <p><strong>Eres alumno:</strong> <%= request.getAttribute("eresAlumno")%></p>
                 <p><strong>Fecha:</strong> <%= request.getAttribute("fecha")%></p>
@@ -38,6 +38,8 @@
                 <input type="hidden" name="fecha" value="<%= request.getAttribute("fecha")%>">
                 <input type="hidden" name="hora" value="<%= request.getAttribute("hora")%>">
                 <input type="hidden" name="asunto" value="<%= request.getAttribute("asunto")%>">
+                
+                <input type="hidden" name="materia" value="<%= request.getAttribute("materia")%>">
 
                 <input type="submit" value="Enviar Solicitud">
             </form>

@@ -20,10 +20,10 @@
                     </div>
                     <div id="welcome-student">
                         <h3>Bienvenido</h3>
-                        <p>Ingresa tu número de solicitud para consultar su estado.</p>
+                        <p>Ingresa tu matricula para ver el estado de tus asesorias.</p>
                     </div>
                     <form class="input-group" action="ConsultarAsesoria" method="post">
-                        <input type="text" name="idSolicitud" class="input" placeholder="Número de solicitud">
+                        <input type="text" name="matricula" class="input" placeholder="Matrícula de estudiante">
                         <input class="button-student" type="submit" value="Consultar">
                     </form>
                     <div class="button-student"><a  href="FormAsesoria.jsp">Solicitar Asesoria</a></div>
