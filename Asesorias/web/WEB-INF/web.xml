@@ -32,6 +32,10 @@
         <servlet-name>AccesoProfesorServlet</servlet-name>
         <servlet-class>AccesoProfesorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ComentarioProfeServlet</servlet-name>
+        <servlet-class>ComentarioProfeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>MateriasServlet</servlet-name>
         <url-pattern>/MateriasServlet</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>AccesoProfesorServlet</servlet-name>
         <url-pattern>/AccesoProfesorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ComentarioProfeServlet</servlet-name>
+        <url-pattern>/ComentarioProfeServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

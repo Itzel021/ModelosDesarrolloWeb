@@ -1,9 +1,3 @@
-<%-- 
-    Document   : MostrarDetalles
-    Created on : 30 abr 2024, 21:43:48
-    Author     : itzee
---%>
-
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="ClasesJava.*" %>
@@ -26,7 +20,6 @@
                 <p><strong>Programa Educativo:</strong> <%= request.getAttribute("nombrePrograma")%></p>
                 <p><strong>Materia:</strong><%= request.getAttribute("materia")%></p>
                 <p><strong>Profesor:</strong> <%= request.getAttribute("nombreProfesor")%></p>
-                <p><strong>Eres alumno:</strong> <%= request.getAttribute("eresAlumno")%></p>
                 <p><strong>Fecha:</strong> <%= request.getAttribute("fecha")%></p>
                 <p><strong>Hora:</strong> <%= request.getAttribute("hora")%></p>
                 <p><strong>Asunto:</strong> <%= request.getAttribute("asunto")%></p>

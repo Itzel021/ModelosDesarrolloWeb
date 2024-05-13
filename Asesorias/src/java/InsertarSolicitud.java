@@ -20,7 +20,7 @@ public class InsertarSolicitud extends HttpServlet {
         String profesor = request.getParameter("idProfesor");
         int idProfesor = Integer.parseInt(profesor);
         String estado = "Pendiente";
-        String comentario = " ";
+        String comentario = null;
         // Obtener la cadena de hora del formulario
         String hora = request.getParameter("hora");
         String materia = request.getParameter("materia");

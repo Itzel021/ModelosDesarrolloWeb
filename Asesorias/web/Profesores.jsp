@@ -1,9 +1,3 @@
-<%-- 
-    Document   : Profesores
-    Created on : 30 abr 2024, 20:27:55
-    Author     : itzee
---%>
-
 <%@page import="java.util.Map"%>
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>

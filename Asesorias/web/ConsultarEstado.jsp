@@ -69,7 +69,7 @@
                     <td><%= solicitud.get("asunto")%></td>
                     <td><%= solicitud.get("estado")%></td>
                     <td><%= nombreProfesor%></td> 
-                    <td><%= solicitud.get("comentarios")%></td>
+                    <td><%= solicitud.get("comentarios") != null ? solicitud.get("comentarios") : "-" %></td>
                 </tr>
                 <%
                         }

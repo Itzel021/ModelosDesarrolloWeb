@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class AccesoProfesorServlet extends HttpServlet {
+public class ComentarioProfeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -27,24 +27,22 @@ public class AccesoProfesorServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String id_profesor_param = request.getParameter("id_profesor");
+
+        HttpSession session = request.getSession();
+        String id_profesor = request.getParameter("id_profesor");
         List<SolicitudProfesor> solicitudes = new ArrayList<>();
+        
         try (Connection con = ConectaDB.obtenConexion(); PreparedStatement ps = con.prepareStatement("SELECT * FROM profesores WHERE id_profesor=?")) {
 
-            ps.setInt(1, Integer.parseInt(id_profesor_param));
+            ps.setInt(1, Integer.parseInt(id_profesor));
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     // Obtener el nombre del profesor
                     String nombreProfesor = rs.getString("nombre");
                     String apellidoPaternoProfe = rs.getString("apellido_paterno");
                     String apellidoMaternoProfe = rs.getString("apellido_materno");
-
-                    // El usuario es válido
-                    String id_profesor = String.valueOf(rs.getInt("id_profesor"));
-                    HttpSession session = request.getSession();
-                    session.setAttribute("id_profesor", id_profesor);
-
                     // Realizar la consulta para obtener las solicitudes del profesor
+                    
                     try (PreparedStatement ps2 = con.prepareStatement("SELECT * FROM solicitudes WHERE id_profesor = ?")) {
                         ps2.setString(1, id_profesor);
                         try (ResultSet rs2 = ps2.executeQuery()) {
@@ -131,13 +129,9 @@ public class AccesoProfesorServlet extends HttpServlet {
                         }
                     }
                     // Agregar el nombre del profesor al conjunto de atributos
-                    request.setAttribute("nombreProfesor", nombreProfesor);
-                    request.setAttribute("apellidoPaternoProfesor", apellidoPaternoProfe);
-                    request.setAttribute("apellidoMaternoProfesor", apellidoMaternoProfe);
-                    // Agregar las solicitudes al request para enviarlas al frontend
-                    request.setAttribute("solicitudes", solicitudes);
-                    // Aquí puedes redirigir a la página principal del profesor (un JSP)
-                    request.getRequestDispatcher("InicioProfesor.jsp").forward(request, response);
+                request.setAttribute("nombreProfesor", nombreProfesor);
+                request.setAttribute("apellidoPaternoProfesor", apellidoPaternoProfe);
+                request.setAttribute("apellidoMaternoProfesor", apellidoMaternoProfe);
 
                 }
             }
@@ -146,13 +140,49 @@ public class AccesoProfesorServlet extends HttpServlet {
             // Manejar o registrar el error según sea necesario
             e.printStackTrace();
         }
-    }
 
-    /*protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        // Obtener los parámetros del formulario
+        String idSolicitud = request.getParameter("idSolicitud");
+        String comentario = request.getParameter("comentario");
+        String accion = request.getParameter("accion");
+
+        if (idSolicitud != null && comentario != null && accion != null) {
+            try (Connection con = ConectaDB.obtenConexion(); PreparedStatement ps = con.prepareStatement("UPDATE solicitudes SET comentario_profesor = ?, estado = ? WHERE id_solicitud = ?")) {
+
+                // Establecer los parámetros en la consulta
+                ps.setString(1, comentario);
+                // Establecer el estado según la acción seleccionada
+                if (accion.equals("aceptar")) {
+                    ps.setString(2, "Aceptada");
+                } else if (accion.equals("rechazar")) {
+                    ps.setString(2, "Rechazada");
+                }
+                ps.setString(3, idSolicitud);
+
+                // Ejecutar la consulta
+                int filasActualizadas = ps.executeUpdate();
+
+                // Verificar si se actualizó la solicitud correctamente
+                if (filasActualizadas > 0) {
+                    for (SolicitudProfesor solicitud : solicitudes) {
+                        if (solicitud.getIdSolicitud() == Integer.parseInt(idSolicitud)) {
+                            // Encontramos la solicitud correspondiente, actualizamos el comentario
+                            solicitud.setComentario_Profesor(comentario);
+                            // No necesitamos continuar el bucle, así que salimos
+                            break;
+                        }
+                    }
+                    // Luego, reenviamos la solicitud al JSP
+                    request.setAttribute("solicitudes", solicitudes);
+                    request.getRequestDispatcher("InicioProfesor.jsp").forward(request, response);
+
+                }
+            } catch (SQLException e) {
+                // Manejar o registrar el error según sea necesario
+                e.printStackTrace();
+            }
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -164,7 +194,7 @@ public class AccesoProfesorServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
- /* @Override
+    /* @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
@@ -177,7 +207,7 @@ public class AccesoProfesorServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    /* @Override
+    /*@Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
@@ -187,9 +217,8 @@ public class AccesoProfesorServlet extends HttpServlet {
      *
      * @return a String containing servlet description
      */
-    @Override
+    /*@Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
-
+    }// </editor-fold>*/
 }
